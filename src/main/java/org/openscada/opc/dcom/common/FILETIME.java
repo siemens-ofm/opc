@@ -21,12 +21,13 @@ package org.openscada.opc.dcom.common;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.jinterop.dcom.common.JIException;
 import org.jinterop.dcom.core.JIStruct;
 
 
-//Contains a 64-bit value representing the number of 100-nanosecond intervals since January 1, 1601 (UTCÊ±¼ä)
+//Contains a 64-bit value representing the number of 100-nanosecond intervals since January 1, 1601 (UTCÊ±ï¿½ï¿½)
 public class FILETIME
 {
     private int high = 0;
@@ -35,6 +36,12 @@ public class FILETIME
 
     public FILETIME ()
     {
+    }
+
+    public FILETIME(JIStruct struct)
+    {
+        this.low = (Integer) struct.getMember(0);
+        this.high = (Integer) struct.getMember(1);
     }
 
     public FILETIME ( final FILETIME arg0 )
@@ -47,6 +54,13 @@ public class FILETIME
     {
         this.high = high;
         this.low = low;
+    }
+
+    public FILETIME ( Date date )
+    {
+        long uctTime = (date.getTime() + 11644473600000L) * 10000L;
+        this.high = (int) ( (uctTime>>32) & 0xFFFFFFFFL) ;
+        this.low =  (int) (  uctTime      & 0xFFFFFFFFL) ;
     }
 
     public int getHigh ()
@@ -113,6 +127,14 @@ public class FILETIME
         struct.addMember ( Integer.class );
         struct.addMember ( Integer.class );
 
+        return struct;
+    }
+
+    public JIStruct toStruct () throws JIException
+    {
+        final JIStruct struct = new JIStruct ();
+        struct.addMember (getLow());
+        struct.addMember (getHigh());
         return struct;
     }
 
