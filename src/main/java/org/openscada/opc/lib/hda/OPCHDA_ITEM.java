@@ -18,9 +18,12 @@ import java.util.List;
 public class OPCHDA_ITEM {
     private JIStruct struct = null;
 
-    public OPCHDA_ITEM(JIStruct struct)
+    private int errorCode;
+
+    public OPCHDA_ITEM(JIStruct struct, int errorCode)
     {
         this.struct = struct;
+        this.errorCode = errorCode;
     }
 
     public static JIStruct getStruct() throws JIException
