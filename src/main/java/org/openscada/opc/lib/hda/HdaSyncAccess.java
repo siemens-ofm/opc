@@ -6,9 +6,7 @@ import org.openscada.opc.dcom.common.FILETIME;
 import org.openscada.opc.dcom.common.impl.Helper;
 import org.openscada.opc.lib.da.ItemState;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * wang-tao.wt@siemens.com
@@ -27,13 +25,27 @@ public class HdaSyncAccess extends HdaAccessBase {
             this.addItem(itemName);
         }
         Integer [] phServers = new Integer[1];
+        // TODO: 2016/7/12 处理getServerHandle获取不到的情况，虽然这几乎不可能发生
         phServers[0] = this.hdaServer.getServerHandle(itemName);
         return read(phServers, begin, end).get(0);
     }
 
     @Override
-    public List<OPCHDA_ITEM> readRaws(List<String> itemName, Date begin, Date end) {
-        return null;
+    public List<OPCHDA_ITEM> readRaws(List<String> itemName, Date begin, Date end) throws JIException{
+        Set<String> unAddedItems = new HashSet<>();
+        for (String s : itemName){
+            if (!this.hdaServer.isAddedItem(s)){
+                unAddedItems.add(s);
+            }
+        }
+        if (!unAddedItems.isEmpty()){
+            this.addItems(unAddedItems);
+        }
+        Integer [] phServers = new Integer[itemName.size()];
+        for (int i = 0;i<itemName.size();i++){
+            phServers[i] = this.hdaServer.getServerHandle(itemName.get(i));
+        }
+        return read(phServers, begin, end);
     }
 
     private List<OPCHDA_ITEM> read(Integer[] phServers, Date begin, Date end) throws JIException{
@@ -55,6 +67,7 @@ public class HdaSyncAccess extends HdaAccessBase {
         try {
             result = Helper.callRespectSFALSE ( this.getObject(), callObject );
         } catch (JIException e) {
+            //// TODO: 2016/7/12 处理异常
             System.out.println(e);
             e.printStackTrace();
             return null;
@@ -63,12 +76,10 @@ public class HdaSyncAccess extends HdaAccessBase {
         JIStruct[] results = (JIStruct[]) ((JIArray) ((JIPointer) result[2]).getReferent()).getArrayInstance();
         Integer[] errorCodes = (Integer[]) ((JIArray) ((JIPointer) result[3]).getReferent()).getArrayInstance();
 
-        System.out.println("length : " + results.length);
-        System.out.println("length : " + errorCodes.length);
-
         List<OPCHDA_ITEM> list = new ArrayList<>();
 
         for (int i = 0;i < results.length;i++){
+            // TODO: 2016/7/12 处理errorCodes，检查返回的lenghth长度是否和phServers的长度一致
             OPCHDA_ITEM item = new OPCHDA_ITEM(results[i], errorCodes[i]);
             list.add(item);
         }
