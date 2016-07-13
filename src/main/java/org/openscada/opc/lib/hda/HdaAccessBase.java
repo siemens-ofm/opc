@@ -77,5 +77,5 @@ public abstract class HdaAccessBase {
     }
 
     public abstract OPCHDA_ITEM readRaw(String itemName, Date begin, Date end) throws JIException;
-    public abstract List<OPCHDA_ITEM> readRaws(List<String> itemName, Date begin, Date end);
+    public abstract List<OPCHDA_ITEM> readRaws(List<String> itemName, Date begin, Date end) throws JIException;
 }
