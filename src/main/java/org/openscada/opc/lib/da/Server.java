@@ -114,12 +114,14 @@ public class Server
             {
                 this.session = JISession.createSession ( this.connectionInformation.getDomain (), this.connectionInformation.getUser (), this.connectionInformation.getPassword () );
                 this.session.setGlobalSocketTimeout ( socketTimeout );
+                this.session.useSessionSecurity(true);
                 this.comServer = new JIComServer ( JIClsid.valueOf ( this.connectionInformation.getClsid () ), this.connectionInformation.getHost (), this.session );
             }
             else if ( this.connectionInformation.getProgId () != null )
             {
                 this.session = JISession.createSession ( this.connectionInformation.getDomain (), this.connectionInformation.getUser (), this.connectionInformation.getPassword () );
                 this.session.setGlobalSocketTimeout ( socketTimeout );
+                this.session.useSessionSecurity(true);
                 this.comServer = new JIComServer ( JIProgId.valueOf ( this.connectionInformation.getProgId () ), this.connectionInformation.getHost (), this.session );
             }
             else

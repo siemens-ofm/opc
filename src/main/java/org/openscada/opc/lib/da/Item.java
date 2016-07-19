@@ -39,7 +39,7 @@ public class Item
     Item ( final Group group, final int serverHandle, final int clientHandle, final String id )
     {
         super ();
-        _log.debug ( String.format ( "Adding new item '%s' (0x%08X) for group %s", id, serverHandle, group.toString () ) );
+        //_log.debug ( String.format ( "Adding new item '%s' (0x%08X) for group %s", id, serverHandle, group.toString () ) );
         this._group = group;
         this._serverHandle = serverHandle;
         this._clientHandle = clientHandle;

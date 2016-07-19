@@ -52,8 +52,8 @@ public class OPCTest4
         
         ci.setHost ( "192.168.1.119" );
 	    ci.setDomain ( "" );
-	    ci.setUser ( "Simons" );
-	    ci.setPassword ( "12345678" );
+	    ci.setUser ( "opc" );
+	    ci.setPassword ( "opc" );
 	    ci.setClsid ( "F8582CF2-88FB-11D0-B850-00C0F0104305" );
 
         final Set<String> items = new HashSet<String> ();

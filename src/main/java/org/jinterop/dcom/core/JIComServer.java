@@ -1005,6 +1005,9 @@ public final class JIComServer extends Stub
             }
             catch ( final IOException e )
             {
+                // TODO: 2016/7/15 to test the closeSub can release socket
+                closeStub();
+                logger.warn("stub closed");
                 throw new JIException ( JIErrorCodes.RPC_E_UNEXPECTED, e );
             }
             catch ( final JIRuntimeException e1 )

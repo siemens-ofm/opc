@@ -242,7 +242,7 @@ public class Group
 
     private synchronized void addItem ( final Item item )
     {
-        _log.debug ( String.format ( "Adding item: '%s', %d", item.getId (), item.getServerHandle () ) );
+        //_log.debug ( String.format ( "Adding item: '%s', %d", item.getId (), item.getServerHandle () ) );
 
         this._itemHandleMap.put ( item.getId (), item.getServerHandle () );
         this._itemMap.put ( item.getServerHandle (), item );
